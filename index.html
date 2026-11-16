@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️ HAPPY ANNIVERSARY</title>
+        <!-- Memanggil Font Poppins dan Dancing Script dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+ body {
+    background-color: transparent; /* Diubah menjadi transparan agar foto kelihatan */
+    color: #e2e8f0;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+
+ .container {
+    width: 100%;
+    max-width: 450px;
+    /* Membuat latar belakang transparan dengan efek blur kaca */
+    background: rgba(26, 31, 38, 0.65); 
+    padding: 30px 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(245, 101, 101, 0.25);
+    text-align: center;
+    backdrop-filter: blur(8px); /* Membuat foto di belakangnya nge-blur estetik di bawah kotak teks */
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1;
+}
+
+
+       h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #f56565;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+       p {
+    font-size: 15px;
+    line-height: 1.8; /* Jarak baris lebih renggang agar rapi */
+    margin-bottom: 18px;
+    text-align: left;
+    white-space: pre-line;
+    color: #cbd5e0; /* Warna putih keabu-abuan agar tidak terlalu silau */
+    letter-spacing: 0.5px;
+}
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            background: #0d0f12;
+            border: 1px solid #4a5568;
+            color: #fff;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #f56565;
+        }
+        button {
+    background: linear-gradient(135deg, #f56565 0%, #d53f8c 100%); /* Gradasi merah ke pink romantis */
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    font-size: 16px;
+    font-family: inherit;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease; /* Transisi halus */
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+}
+button:hover {
+    transform: translateY(-2px); /* Tombol sedikit naik saat di-hover */
+    box-shadow: 0 6px 15px rgba(245, 101, 101, 0.5);
+}
+
+        button:hover {
+            background: #e53e3e;
+        }
+        .error-msg {
+            color: #feb2b2;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        #content-section {
+            display: none;
+        }
+        .heart-icon {
+            font-size: 50px;
+            color: #e53e3e;
+            animation: pulse 0.8s infinite alternate;
+            margin-bottom: 20px;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.15); }
+        }
+        .foto-kita {
+    width: 85%;
+    max-width: 280px;
+    border-radius: 20px; /* Membuat sudut foto membulat estetik */
+    margin: 25px auto;
+    border: 4px solid #ffffff; /* Bingkai putih tebal ala foto polaroid */
+    display: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); /* Bayangan foto lebih tegas */
+    object-fit: cover;
+}
+
+        #canvas-fw {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            pointer-events: none;
+            display: none;
+        }
+        /* Gaya untuk latar belakang foto bergerak */
+
+
+/* Logic transisi fade bergantian */
+/* Gaya untuk latar belakang foto bergerak sinematik */
+.bg-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Menggunakan 'cover' dikombinasikan dengan efek geser agar memenuhi layar tanpa menutupi teks */
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -2; 
+    opacity: 0;
+    filter: brightness(0.45); /* Redup pas agar teks putih tetap menyala tajam */
+    
+    /* Animasi fade bergantian dan gerakan kamera bergeser (panning) */
+    animation: sliderAnimasi 12s infinite linear, geserFoto 12s infinite ease-in-out;
+}
+
+/* 1. Animasi Transisi Fade Bergantian (Selama total 12 detik) */
+@keyframes sliderAnimasi {
+    0% { opacity: 0; }
+    8% { opacity: 1; }
+    33% { opacity: 1; }
+    41% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* Animasi Gerakan Panning Samping (Efek Kamera Bergeser Lembut) */
+@keyframes geserFoto {
+    0% {
+        transform: scale(1.05) translateX(-10px);
+    }
+    50% {
+        transform: scale(1.05) translateX(10px); /* Bergerak ke kanan halus */
+    }
+    100% {
+        transform: scale(1.05) translateX(-10px); /* Kembali ke kiri */
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Tambahkan 3 baris div ini untuk background foto bergerak -->
+    <div class="bg-slideshow" style="background-image: url('foto-kita1.jpg'); animation-delay: 0s;"></div>
+    <div class="bg-slideshow" style="background-image: url('foto-kita2.jpg'); animation-delay: 4s;"></div>
+    <div class="bg-slideshow" style="background-image: url('foto-kita3.jpg'); animation-delay: 8s;"></div>
+
+
+    <!-- ELEMEN AUDIO DAN BACKGROUND KEMBANG API -->
+    <audio id="bg-music" src="pastlife.wav" loop></audio>
+    <canvas id="canvas-fw"></canvas>
+
+    <div class="container">
+        <!-- SEKSI LOGIN / PASSWORD TEKA TEKI -->
+        <div id="login-section">
+            <h2>🔒 SYSTEM LOCKED - PESAN RAHASIA</h2>
+            <p style="text-align: center;">Untuk membuka pesan ini, kamu harus menjawab teka-teki tentang kita... 😉</p>
+            <p style="font-weight: bold; color: #cbd5e0; text-align: center; margin-top: 10px;">
+                Dimana Tempat Pertama Kita Bertemu?
+            </p>
+            <input type="text" id="jawaban-input" placeholder="Ketik jawabanmu di sini..." autocomplete="off">
+            <button onclick="cekJawaban()">Buka Akses 🔓</button>
+            <div id="error-box" class="error-msg"></div>
+        </div>
+
+        <!-- SEKSI KONTEN UTAMA YANG DIUJI -->
+        <div id="content-section">
+            <div class="heart-icon">❤️</div>
+            <div id="text-typing"></div>
+            <img id="foto-romantis" class="foto-kita" src="16.jpg" alt="Foto Kita">
+        </div>
+    </div>
+    <script>
+        let percobaan = 3;
+        const ucapanTeks = [
+            "Hii sayangggku Wulan Dwi Puspita Sari, selamat tanggal 17 yang ke 2 tahun yaa honeyyy cintakuu... ❤️\n",
+            "Honey, sehat sehat yaa sayangg jaga kesehatan terus. ✨\n",
+            "Terimakasih untuk semua yang sudah kamu beri ke aku. Tak terasa wes 2 tahun bareng yaa. 🥹\n",
+            "Cukup buanyaaakkk yang sudah kita lalui, banyak juga rintangan rintangan yang sudah kita lewati bareng dengan bergandeng tangan. Banyak maaf yg terlalu sering keluar dari mulutku karena hal hal bodoh yang sering tak lakuin, bahkan sering buat jengkel kamu. 😣\n",
+            "Aku minta maaf kalau selama ini belum bisa menjadi laki laki yang selalu bikin kamu bahagia belum bisa membawa kmu ke puncak impian setiap pasangan, aku akan terus mengusahakan itu. I promise you 🥰\n",
+            "Terimakasih sudah menjadi tempat untuk aku mendapat validasi tentang semua keluh kesahku, aku tidak punya tempat selama ini untuk aku meluapkan rasa capek, kesal, marah, dan kecewa. Adanya kamu aku bisa sedikit punya tempat untuk aku meluapkan semua dan bener bener di validasi di beri ruang di beri ketenangan. Terimakasih banyakkkkk 🙏❤️\n",
+            "Gk banyak yang bisa aku janjikan tapi aku berusaha buat mengupayakan. Maaf kalau kamu harus nunggu lama aku tak akan berhenti berusaha sebaik baiknya untuk masa depan kamuu. 💼🏡\n",
+            "Aku sayanggg kamu\nTerimakasih banyakk buat semuanyaa sayanggg. 🫶\n",
+            "I love you today, tomorrow, and always.\n",
+            "Sampai bertemu sayangggku  🥰\n🤍 🤍 💞 💓"
+        ];
+                   function cekJawaban() {
+            const input = document.getElementById("jawaban-input").value.trim().toLowerCase();
+            const errorBox = document.getElementById("error-box");
+            const music = document.getElementById("bg-music");
+
+            if (input.includes("araya")) {
+                document.getElementById("login-section").style.display = "none";
+                document.getElementById("content-section").style.display = "block";
+                
+                music.play().catch(e => console.log("Audio terhambat browser:", e));
+                
+                mulaiMengetik(0);
+            } else {
+                percobaan--;
+                if (percobaan > 0) {
+                    errorBox.innerHTML = `❌ Jawaban salah, Sayang! Kesempatan tersisa: ${percobaan} kali lagi. Coba ingat-ingat tempat pertama kita bertemu~`;
+                } else {
+                    errorBox.innerHTML = `❌ Kesempatan habis! Tapi karena aku sayang kamu, pintunya tetep aku buka deh... 😂`;
+                    setTimeout(() => {
+                        document.getElementById("login-section").style.display = "none";
+                        document.getElementById("content-section").style.display = "block";
+                        music.play().catch(e => console.log("Audio terhambat browser:", e));
+                        mulaiMengetik(0);
+                    }, 2000);
+                }
+            }
+        }
+
+
+        function mulaiMengetik(indexKalimat) {
+            if (indexKalimat >= ucapanTeks.length) {
+                // FOTO LANGSUNG MUNCUL DENGAN EFEK FADE DAN KEMBANG API DIMULAI
+                const foto = document.getElementById("foto-romantis");
+                foto.style.display = "block";
+                foto.style.opacity = "0";
+                
+                // Efek transisi halus untuk memunculkan foto
+                let op = 0;
+                let timer = setInterval(function () {
+                    if (op >= 1){
+                        clearInterval(timer);
+                    }
+                    foto.style.opacity = op;
+                    op += 0.1;
+                }, 50);
+
+                mulaiKembangApi();
+                return;
+            }
+
+            const targetDiv = document.getElementById("text-typing");
+            const pBaru = document.createElement("p");
+            targetDiv.appendChild(pBaru);
+
+            let karakterIndex = 0;
+            const teksSekarang = ucapanTeks[indexKalimat];
+
+            function ketikKarakter() {
+                if (karakterIndex < teksSekarang.length) {
+                    pBaru.innerHTML += teksSekarang.charAt(karakterIndex);
+                    karakterIndex++;
+                    setTimeout(ketikKarakter, 40); 
+                } else {
+                    setTimeout(() => {
+                        mulaiMengetik(indexKalimat + 1);
+                    }, 800);
+                }
+            }
+            ketikKarakter();
+        }
+        function mulaiKembangApi() {
+            const canvas = document.getElementById("canvas-fw");
+            canvas.style.display = "block";
+            const ctx = canvas.getContext("2d");
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particles = [];
+
+            function HujanPartikel(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.radius = Math.random() * 3 + 1.5;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 10,
+                    y: (Math.random() - 0.5) * 10
+                };
+                this.alpha = 1;
+            }
+
+            HujanPartikel.prototype.draw = function() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            };
+
+                       HujanPartikel.prototype.update = function() {
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.velocity.y += 0.06; // Efek jatuh gravitasi partikel kembang api
+                this.alpha -= 0.012;     // Partikel memudar perlahan
+            };
+
+            function buatLedakan() {
+                // Membuat ledakan acak di koordinat layar atas-tengah
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * (canvas.height * 0.4) + 100;
+                const colors = ["#ff5964", "#35a7ff", "#ffc857", "#1be7ff", "#ee6c4d", "#f43f5e"];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+
+                for (let i = 0; i < 50; i++) {
+                    particles.push(new HujanPartikel(x, y, color));
+                }
+            }
+
+            // Interval memicu kembang api baru meledak
+            const bomInterval = setInterval(buatLedakan, 600);
+
+            function loopAnimasi() {
+                requestAnimationFrame(loopAnimasi);
+                // Menggunakan clearRect murni agar background canvas transparan penuh
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach((p, index) => {
+                    if (p.alpha <= 0) {
+                        particles.splice(index, 1);
+                    } else {
+                        p.update();
+                        p.draw();
+                    }
+                });
+            }
+            loopAnimasi();
+        }
+    </script>
+</body>
+</html>
